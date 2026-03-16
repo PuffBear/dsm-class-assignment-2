@@ -64,3 +64,18 @@ Since we have experience with Streamlit, we could build a quick local Streamlit 
 
 ### 4. Advanced ML: Embeddings from Neo4j (Node2Vec)
 For the predictive modelling component, instead of just using basic graph metrics (like degree or PageRank), we can generate dense vector embeddings for users and businesses using **Node2Vec** or **FastRP** (available in Neo4j GDS). Feeding these embeddings into our XGBoost model will significantly boost predictive accuracy.
+
+### 5. Advanced Geospatial Queries & Clustering
+We can leverage MongoDB's powerful `2dsphere` indexes to perform geo-spatial queries. Instead of just analyzing text categories, we could identify high-density "foodie corridors" geographically or build a tool that routes you through the highest-rated businesses across a specific area boundary.
+
+### 6. Temporal Graph Analysis
+A standard graph models a single point in time, but the Yelp data spans years. By adding time attributes to our edges (`REVIEWED_ON`, `BECAME_FRIENDS_ON`), we can visualize how the Yelp graph evolves dynamically. We could track how a specific business's PageRank influence rose or fell over different years.
+
+### 7. Real-Time Streaming Pipeline Simulation
+To demonstrate big-data prowess, we could simulate a live stream of user reviews. Using Python concurrency (or even a lightweight Kafka/Spark stream), we could show how "live" data gets ingested into MongoDB and updates Neo4j recommendations in real-time without taking the databases offline.
+
+### 8. Hybrid Recommendation Engine
+Rather than relying purely on graph connections (collaborative filtering via Neo4j), we could build a hybrid engine. It would combine the user-friend paths from Neo4j with **content-based similarity**—for instance, using MongoDB text-index searches on the text of the reviews themselves to match users who like similar ambiances or specific dishes.
+
+### 9. Explainable AI (SHAP) For Rating Predictions
+For the predictive modeling task, taking it a step further would mean not just generating a prediction, but fully breaking it down using **SHAP (SHapley Additive exPlanations)** values. By plotting the SHAP summary graphs, we can explicitly show exactly *why* our model predicted a 4-star rating vs. a 2-star rating, pointing specifically to how much the graph features vs. the MongoDB tabular features influenced the model's decision.
