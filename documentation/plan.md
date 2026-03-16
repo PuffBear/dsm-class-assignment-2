@@ -49,9 +49,7 @@ Working with the entire 7-million review dataset is computationally expensive.
 
 ---
 
-## How We Can Go "Above and Beyond" (Bonus Value)
-
-To score top marks and build an impressive portfolio project, we can enhance our approach with the following "above and beyond" features:
+## How To Go "Above and Beyond" 
 
 ### 1. Advanced Graph-Based Sampling Strategy
 Instead of haphazardly dropping rows, we can implement **Random Walk with Restart (RWR)** or **Forest Fire Sampling** to subset the data. This guarantees that the subgraph we feed into Neo4j remains densely connected, which is critical for accurate PageRank and Community Detection results.
