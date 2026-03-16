@@ -1,0 +1,121 @@
+/*
+Data Science and Management: CS-3510 - Assignment 2
+MongoDB Query Answers
+*/
+
+// Query 1: Safest and least-safe cities and business categories based on average star ratings, accounting for review volume.
+db.businesses.aggregate([
+  // Filter out businesses with low review counts to ensure statistical significance
+  { $match: { review_count: { $gte: 20 } } },
+  { $group: {
+      _id: { city: "$city" },
+      avg_stars: { $avg: "$stars" },
+      total_reviews: { $sum: "$review_count" },
+      business_count: { $sum: 1 }
+  }},
+  { $sort: { avg_stars: -1 } }
+])
+
+// Query 2: Determine which cities and business categories show the strongest upward and downward trends in average star rating over time.
+// Note: This requires joining reviews with businesses to get the review dates and city.
+db.reviews.aggregate([
+  { $lookup: {
+      from: "businesses",
+      localField: "business_id",
+      foreignField: "business_id",
+      as: "bus"
+  }},
+  { $unwind: "$bus" },
+  { $addFields: { year: { $substr: ["$date", 0, 4] } } }, // Extract year from review date string "YYYY-MM-DD HH:MM:SS"
+  { $group: {
+      _id: { city: "$bus.city", year: "$year" },
+      avg_stars: { $avg: "$stars" },
+      count: { $sum: 1 }
+  }},
+  { $sort: { "_id.city": 1, "_id.year": 1 } }
+])
+
+// Query 3: Analyze the correlation between a business’s review volume and its average star rating.
+db.businesses.aggregate([
+  { $bucket: {
+      groupBy: "$review_count",
+      boundaries: [0, 10, 50, 100, 500, 1000, 5000],
+      default: "5000+",
+      output: {
+          avg_stars: { $avg: "$stars" },
+          count: { $sum: 1 }
+      }
+  }},
+  { $sort: { "_id": 1 } }
+])
+
+// Query 4: Compare review behavior across business categories.
+db.reviews.aggregate([
+  { $lookup: { from: "businesses", localField: "business_id", foreignField: "business_id", as: "bus" } },
+  { $unwind: "$bus" },
+  // Categories are a comma separated string, split them
+  { $addFields: { category_array: { $split: ["$bus.categories", ", "] } } },
+  { $unwind: "$category_array" },
+  { $group: {
+      _id: "$category_array",
+      avg_stars: { $avg: "$stars" },
+      avg_useful: { $avg: "$useful" },
+      avg_text_length: { $avg: { $strLenCP: "$text" } },
+      total_reviews: { $sum: 1 }
+  }},
+  // Only keep categories with a substantial number of reviews
+  { $match: { total_reviews: { $gte: 1000 } } },
+  { $sort: { avg_useful: -1 } },
+  { $limit: 20 }
+])
+
+// Query 5: Investigate the impact of user tenure on reviewing behavior.
+db.users.aggregate([
+  { $addFields: { 
+      join_year: { $substr: ["$yelping_since", 0, 4] },
+      current_year: "2023", // Assuming dataset ending context
+      tenure_years: { 
+          $subtract: [ 2023, { $toInt: { $substr: ["$yelping_since", 0, 4] } } ] 
+      }
+  }},
+  { $bucket: {
+      groupBy: "$tenure_years",
+      boundaries: [0, 2, 5, 10, 15],
+      default: "15+",
+      output: {
+          avg_stars: { $avg: "$average_stars" },
+          avg_useful: { $avg: "$useful" },
+          total_users: { $sum: 1 }
+      }
+  }}
+])
+
+// Query 6: Relationship between elite status and review quality.
+db.users.aggregate([
+  { $addFields: { 
+      is_elite: { 
+          $cond: { if: { $in: ["", { $split: [{ $ifNull: ["$elite", ""] }, ","] }] }, then: false, else: true }
+      }
+  }},
+  { $group: {
+      _id: "$is_elite",
+      avg_user_stars: { $avg: "$average_stars" },
+      avg_useful_votes: { $avg: "$useful" },
+      total_users: { $sum: 1 }
+  }}
+])
+
+// Query 7: Connection between check-in activity patterns and business star ratings.
+db.businesses.aggregate([
+  { $addFields: { total_checkins: { $size: { $ifNull: ["$checkins", []] } } } },
+  { $bucket: {
+      groupBy: "$total_checkins",
+      boundaries: [0, 10, 50, 200, 1000],
+      default: "1000+",
+      output: {
+          avg_stars: { $avg: "$stars" },
+          count: { $sum: 1 }
+      }
+  }},
+  { $sort: { "_id": 1 } }
+])
