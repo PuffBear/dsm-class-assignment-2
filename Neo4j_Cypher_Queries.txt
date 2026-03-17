@@ -1,0 +1,86 @@
+/*
+Data Science and Management: CS-3510 - Assignment 2
+Neo4j / Cypher Query Answers
+*/
+
+// Query 1: Most well-connected users and review correlation
+// First: observe top well-connected users
+MATCH (u:User)-[:KNOWS]->(f:User)
+WITH u, count(f) AS friendCount
+ORDER BY friendCount DESC
+LIMIT 10
+RETURN u.name, friendCount, u.review_count, u.stars AS avg_stars;
+
+// Second: determine if connectivity relates to review counts and rating behavior
+MATCH (u:User)-[:KNOWS]->(f:User)
+WITH u, count(f) AS friendCount
+WITH CASE 
+        WHEN friendCount >= 500 THEN '500+' 
+        WHEN friendCount >= 100 THEN '100-499' 
+        WHEN friendCount >= 50 THEN '50-99' 
+        WHEN friendCount >= 10 THEN '10-49' 
+        ELSE '1-9' END AS connectivity_level,
+     avg(u.review_count) AS avg_reviews,
+     avg(u.stars) AS avg_stars,
+     count(u) AS user_count
+RETURN connectivity_level, avg_reviews, avg_stars, user_count
+ORDER BY user_count DESC;
+
+// Query 2: Business Recommendation using Paths
+// Let's use a highly connected User for testing (e.g. user_id = 'target_user_id')
+// Given a user, find businesses friends have rated highly (>= 4 stars)
+// that the target user has not yet rated.
+MATCH (u:User {user_id: "target_user_id"})-[:KNOWS]->(friend:User)-[r:RATED]->(b:Business)
+WHERE r.stars >= 4.0
+  AND NOT (u)-[:RATED]->(b)
+RETURN b.name, b.city, count(friend) AS recommending_friends, avg(r.stars) AS avg_friend_rating
+ORDER BY recommending_friends DESC, avg_friend_rating DESC
+LIMIT 10;
+
+// Query 3: PageRank Algorithm
+// Step 3a: Project Graph
+CALL gds.graph.project(
+  'UserBusinessGraph',
+  ['User', 'Business'],
+  { RATED: { orientation: 'NATURAL' } }
+);
+// Step 3b: Evaluate PageRank
+CALL gds.pageRank.stream('UserBusinessGraph')
+YIELD nodeId, score
+WITH gds.util.asNode(nodeId) AS n, score
+WHERE labels(n) = ['Business']  // Focus on Business Nodes
+RETURN n.name AS business_name, n.city AS city, score AS pagerank_score, size((n)<-[:RATED]-()) AS review_count
+ORDER BY pagerank_score DESC
+LIMIT 20;
+
+// Query 4: Community Detection (Louvain)
+// Step 4a: Project Social Graph
+CALL gds.graph.project(
+    'SocialGraph',
+    'User',
+    { KNOWS: { orientation: 'UNDIRECTED' } }
+);
+// Step 4b: Run Louvain 
+CALL gds.louvain.stream('SocialGraph')
+YIELD nodeId, communityId
+WITH gds.util.asNode(nodeId) AS u, communityId
+// Correlate with geography by checking where the users in the community rate businesses
+MATCH (u)-[:RATED]->(b:Business)
+WITH communityId, count(DISTINCT u) AS members, b.city AS city, count(b) AS reviews_in_city
+ORDER BY communityId, reviews_in_city DESC
+WITH communityId, members, collect({city: city, reviews: reviews_in_city})[0..3] AS top_locations
+RETURN communityId, members, top_locations
+ORDER BY members DESC
+LIMIT 10;
+
+// Query 5: Reproduce query from MongoDB Section in Cypher
+// Specifically reproducing Query 1 from MongoDB section: Safest and least-safe categories based on avg rating.
+// Notice how Graph representation naturally handles the many-to-many relationship of categories, 
+// completely avoiding the `$unwind` pipeline step in MongoDB.
+MATCH (b:Business)-[:IN_CATEGORY]->(c:Category)
+MATCH (u)-[r:RATED]->(b)
+WITH c.name AS category_name, avg(r.stars) AS average_category_rating, count(r) AS total_reviews
+WHERE total_reviews >= 50
+RETURN category_name, average_category_rating, total_reviews
+ORDER BY average_category_rating DESC
+LIMIT 15;
