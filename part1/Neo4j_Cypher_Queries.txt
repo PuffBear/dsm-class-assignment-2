@@ -1,0 +1,151 @@
+/*
+Data Science and Management: CS-3510 - Assignment 2
+Neo4j / Cypher Query Answers
+*/
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Query 1 (2 marks): Top 10 users by friend count
+// Report: friend count, review count, mean star rating
+// ─────────────────────────────────────────────────────────────────────────────
+MATCH (u:User)-[:KNOWS]->(f:User)
+WITH u, count(f) AS friend_count
+ORDER BY friend_count DESC
+LIMIT 10
+RETURN u.name           AS name,
+       friend_count,
+       u.review_count   AS review_count,
+       u.average_stars  AS mean_star_rating;
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Query 2 (3 marks): Top 3 businesses per state by avg star rating (≥50 reviews)
+// Report: business name, categories, city, avg rating
+// NOTE: Requires 'state' on Business nodes — run updated neo4j_ingest.py first.
+// ─────────────────────────────────────────────────────────────────────────────
+MATCH (b:Business)<-[:REVIEWS]-(r:Review)
+WITH b, count(r) AS review_count, avg(r.stars) AS avg_rating
+WHERE review_count >= 50
+WITH b.state AS state,
+     { name:         b.name,
+       city:         b.city,
+       avg_rating:   avg_rating,
+       review_count: review_count,
+       categories:   [(b)-[:IN_CATEGORY]->(c) | c.name] } AS biz
+ORDER BY state, biz.avg_rating DESC
+WITH state, collect(biz)[0..3] AS top3
+UNWIND top3 AS b
+RETURN state,
+       b.name                            AS business_name,
+       b.city                            AS city,
+       b.categories                      AS categories,
+       round(b.avg_rating * 100) / 100   AS avg_star_rating,
+       b.review_count                    AS review_count
+ORDER BY state, avg_star_rating DESC;
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Query 3 (3 marks): Top 10 users who reviewed across the most distinct cities
+// Report: cities covered, mean star rating per city
+// Note: subset covers 5 cities, so max cities_covered = 5.
+// ─────────────────────────────────────────────────────────────────────────────
+MATCH (u:User)-[:WROTE]->(r:Review)-[:REVIEWS]->(b:Business)
+WITH u, b.city AS city, avg(r.stars) AS city_avg
+WITH u,
+     count(DISTINCT city)                                                   AS cities_covered,
+     collect({ city: city, mean_rating: round(city_avg * 100) / 100 })     AS city_ratings
+ORDER BY cities_covered DESC
+LIMIT 10
+RETURN u.name   AS name,
+       cities_covered,
+       city_ratings;
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Query 4 (3 marks): Users who reviewed ≥5 businesses in a chosen category
+// Chosen category: "Restaurants"
+// Compare each user's average rating in the category vs their own overall avg across all reviews
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Step 1: find qualifying users — reviewed ≥5 businesses in "Restaurants"
+MATCH (u:User)-[:WROTE]->(r:Review)-[:REVIEWS]->(b:Business)-[:IN_CATEGORY]->(c:Category {name: "Restaurants"})
+WITH u, count(DISTINCT b) AS biz_in_cat, avg(r.stars) AS user_cat_avg
+WHERE biz_in_cat >= 5
+
+// Step 2: get each user's overall avg across ALL their reviews
+MATCH (u)-[:WROTE]->(r2:Review)
+WITH u, biz_in_cat, user_cat_avg, avg(r2.stars) AS user_overall_avg
+RETURN u.name                                                   AS name,
+       biz_in_cat                                               AS businesses_in_category,
+       round(user_cat_avg * 100)    / 100                      AS user_avg_in_restaurants,
+       round(user_overall_avg * 100) / 100                     AS user_overall_avg,
+       round((user_cat_avg - user_overall_avg) * 100) / 100    AS deviation
+ORDER BY biz_in_cat DESC
+LIMIT 20;
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Query 5 (1 mark): Reproduce MongoDB Query 1 in Cypher + compare approaches
+// MongoDB Query 1: cities ranked by avg business star rating (businesses ≥20 reviews)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Cypher version:
+MATCH (b:Business)<-[:REVIEWS]-(r:Review)
+WITH b, count(r) AS review_count
+WHERE review_count >= 20
+WITH b.city           AS city,
+     avg(b.stars)     AS avg_stars,
+     sum(review_count) AS total_reviews,
+     count(b)         AS business_count
+RETURN city,
+       round(avg_stars * 100) / 100 AS avg_stars,
+       total_reviews,
+       business_count
+ORDER BY avg_stars DESC;
+
+/*
+Comparison:
+  MongoDB uses an explicit aggregation pipeline ($match → $group → $sort).
+  The review_count threshold relies on a pre-stored field on the document.
+
+  Cypher traverses edges directly (Business)<-[:REVIEWS]-() to count reviews
+  on-the-fly, making the stored review_count field unnecessary.
+  This is the natural strength of a graph: relationships are first-class,
+  so counting them costs no extra JOIN or $lookup, just edge traversal.
+*/
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GRAPH VISUALISATIONS
+// Run these in Neo4j Browser to produce visual graph output for the report.
+// These are companion queries to the tabular results above.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Graph A: Friend network of the top 10 most-connected users
+// Shows User nodes and their KNOWS edges — demonstrates the social graph structure.
+MATCH (u:User)-[:KNOWS]->(f:User)
+WITH u, count(f) AS friend_count
+ORDER BY friend_count DESC
+LIMIT 10
+MATCH (u)-[k:KNOWS]->(f:User)
+RETURN u, k, f;
+
+
+// Graph B: Category membership of the top-reviewed businesses
+// Shows Business→Category nodes and IN_CATEGORY edges.
+// Useful for visualising how businesses cluster around shared categories.
+MATCH (b:Business)<-[:REVIEWS]-(r:Review)
+WITH b, count(r) AS review_count
+ORDER BY review_count DESC
+LIMIT 15
+MATCH (b)-[ic:IN_CATEGORY]->(c:Category)
+RETURN b, ic, c;
+
+
+// Graph C: User→Review→Business traversal for the Restaurants category (Query 4 context)
+// Shows the full path: who reviewed what, connected through the category.
+// Limit kept small so Neo4j Browser renders it clearly.
+MATCH path = (u:User)-[:WROTE]->(r:Review)-[:REVIEWS]->(b:Business)-[:IN_CATEGORY]->(c:Category {name: "Restaurants"})
+WITH u, count(DISTINCT b) AS biz_count, path
+WHERE biz_count >= 5
+RETURN path
+LIMIT 50;

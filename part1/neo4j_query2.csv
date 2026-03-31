@@ -1,0 +1,16 @@
+state,business_name,city,categories,avg_star_rating,review_count
+AZ,Let's Sweat,Tucson,"[Yoga, Fitness & Instruction, Cycling Classes, Gyms, Active Life]",5.0,59
+AZ,Premier Pest Solutions,Tucson,"[Local Services, Pest Control]",5.0,56
+AZ,Tremendez Jewelry and Repair,Tucson,"[Local Services, Engraving, Watch Repair, Jewelry Repair, Jewelry, Shopping]",4.98,55
+FL,AllVitae Health & Chiropractic,Tampa,"[Massage, Skin Care, Health Coach, Massage Therapy, Chiropractors, Beauty & Spas, Health & Medical, Weight Loss Centers]",5.0,67
+FL,Gerardo Luna Photographs,Tampa,"[Event Planning & Services, Real Estate, Real Estate Photography, Real Estate Services, Photographers, Session Photography, Event Photography, Home Services]",4.98,51
+FL,Tampa Bay Rum Company,Tampa,"[Food, Distilleries]",4.96,57
+IN,Alvin Lui,Indianapolis,"[Arts & Entertainment, Adult Entertainment, Event Planning & Services, Magicians, Nightlife, Performing Arts]",5.0,50
+IN,Brick & Mortar Barber Shop,Indianapolis,"[Barbers, Beauty & Spas]",4.97,72
+IN,kOMpose,Indianapolis,"[Life Coach, Fitness & Instruction, Professional Services, Active Life, Yoga]",4.97,58
+PA,Guldner's Collision Service,Philadelphia,"[Automotive, Body Shops]",5.0,57
+PA,Campbell Jewelers,Philadelphia,"[Local Services, Jewelry Repair, Jewelry, Shopping, Bridal]",5.0,55
+PA,Sugar Bar Salon,Philadelphia,"[Hair Removal, Beauty & Spas, Sugaring]",5.0,55
+TN,Taylor Home Solutions,Nashville,"[Carpeting, Local Services, Home Services, Air Duct Cleaning, Heating & Air Conditioning/HVAC, Carpet Cleaning]",5.0,50
+TN,Music City Cats,Nashville,"[Dog Walkers, Pets, Pet Services, Pet Sitting, Home Services, House Sitters]",5.0,54
+TN,Walls Jewelry Repairing,Nashville,"[Local Services, Watch Repair, Shopping, Jewelry]",5.0,114

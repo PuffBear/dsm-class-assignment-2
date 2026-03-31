@@ -1,0 +1,221 @@
+name,cities_covered,city_ratings
+David,5,"[
+  {
+    city: Indianapolis,
+    mean_rating: 3.6
+  },
+  {
+    city: Tucson,
+    mean_rating: 3.87
+  },
+  {
+    city: Nashville,
+    mean_rating: 4.0
+  },
+  {
+    city: Philadelphia,
+    mean_rating: 3.86
+  },
+  {
+    city: Tampa,
+    mean_rating: 4.5
+  }
+]"
+Carol,5,"[
+  {
+    city: Nashville,
+    mean_rating: 3.73
+  },
+  {
+    city: Tampa,
+    mean_rating: 4.2
+  },
+  {
+    city: Indianapolis,
+    mean_rating: 3.71
+  },
+  {
+    city: Tucson,
+    mean_rating: 3.0
+  },
+  {
+    city: Philadelphia,
+    mean_rating: 3.75
+  }
+]"
+Anthony,5,"[
+  {
+    city: Nashville,
+    mean_rating: 3.38
+  },
+  {
+    city: Indianapolis,
+    mean_rating: 3.8
+  },
+  {
+    city: Philadelphia,
+    mean_rating: 3.5
+  },
+  {
+    city: Tucson,
+    mean_rating: 3.0
+  },
+  {
+    city: Tampa,
+    mean_rating: 4.0
+  }
+]"
+Eric,5,"[
+  {
+    city: Nashville,
+    mean_rating: 4.0
+  },
+  {
+    city: Tampa,
+    mean_rating: 4.17
+  },
+  {
+    city: Philadelphia,
+    mean_rating: 3.6
+  },
+  {
+    city: Indianapolis,
+    mean_rating: 4.67
+  },
+  {
+    city: Tucson,
+    mean_rating: 3.71
+  }
+]"
+Jennifer,5,"[
+  {
+    city: Indianapolis,
+    mean_rating: 4.0
+  },
+  {
+    city: Tucson,
+    mean_rating: 4.35
+  },
+  {
+    city: Tampa,
+    mean_rating: 4.0
+  },
+  {
+    city: Nashville,
+    mean_rating: 3.67
+  },
+  {
+    city: Philadelphia,
+    mean_rating: 4.0
+  }
+]"
+Kyle,5,"[
+  {
+    city: Tampa,
+    mean_rating: 4.0
+  },
+  {
+    city: Nashville,
+    mean_rating: 4.5
+  },
+  {
+    city: Tucson,
+    mean_rating: 4.13
+  },
+  {
+    city: Philadelphia,
+    mean_rating: 4.0
+  },
+  {
+    city: Indianapolis,
+    mean_rating: 4.0
+  }
+]"
+Fox,5,"[
+  {
+    city: Philadelphia,
+    mean_rating: 4.06
+  },
+  {
+    city: Nashville,
+    mean_rating: 3.84
+  },
+  {
+    city: Tampa,
+    mean_rating: 3.98
+  },
+  {
+    city: Indianapolis,
+    mean_rating: 3.52
+  },
+  {
+    city: Tucson,
+    mean_rating: 4.0
+  }
+]"
+Olivier,5,"[
+  {
+    city: Philadelphia,
+    mean_rating: 3.56
+  },
+  {
+    city: Nashville,
+    mean_rating: 3.5
+  },
+  {
+    city: Tucson,
+    mean_rating: 4.0
+  },
+  {
+    city: Tampa,
+    mean_rating: 3.0
+  },
+  {
+    city: Indianapolis,
+    mean_rating: 2.5
+  }
+]"
+Joanna,5,"[
+  {
+    city: Nashville,
+    mean_rating: 3.07
+  },
+  {
+    city: Tucson,
+    mean_rating: 4.67
+  },
+  {
+    city: Indianapolis,
+    mean_rating: 3.73
+  },
+  {
+    city: Philadelphia,
+    mean_rating: 3.55
+  },
+  {
+    city: Tampa,
+    mean_rating: 3.36
+  }
+]"
+S,5,"[
+  {
+    city: Indianapolis,
+    mean_rating: 4.25
+  },
+  {
+    city: Nashville,
+    mean_rating: 4.0
+  },
+  {
+    city: Tucson,
+    mean_rating: 4.25
+  },
+  {
+    city: Philadelphia,
+    mean_rating: 3.75
+  },
+  {
+    city: Tampa,
+    mean_rating: 5.0
+  }
+]"

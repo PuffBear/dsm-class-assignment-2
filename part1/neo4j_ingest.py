@@ -8,8 +8,7 @@ AUTH = ("neo4j", "testpassword")
 SUBSET_DIR = "./subset/"
 
 def get_driver():
-    # If using authentication: return GraphDatabase.driver(URI, auth=AUTH)
-    return GraphDatabase.driver(URI) # without auth for local dev
+    return GraphDatabase.driver(URI, auth=AUTH)
 
 def drop_all(tx):
     tx.run("MATCH (n) DETACH DELETE n;")
@@ -37,9 +36,10 @@ def create_businesses(driver):
                 b = json.loads(line)
                 cats = [c.strip() for c in (b.get("categories") or "").split(",") if c.strip()]
                 docs.append({
-                    "id": b["business_id"], 
-                    "name": b["name"], 
-                    "city": b["city"], 
+                    "id": b["business_id"],
+                    "name": b["name"],
+                    "city": b["city"],
+                    "state": b.get("state", ""),
                     "stars": b["stars"],
                     "categories": cats
                 })
@@ -54,7 +54,7 @@ def _insert_businesses(tx, docs):
     query = """
     UNWIND $batch AS b
     MERGE (bus:Business {business_id: b.id})
-    SET bus.name = b.name, bus.city = b.city, bus.stars = b.stars
+    SET bus.name = b.name, bus.city = b.city, bus.state = b.state, bus.stars = b.stars
     WITH bus, b
     UNWIND b.categories as cat
     MERGE (c:Category {name: cat})

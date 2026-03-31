@@ -7,7 +7,7 @@
 
 ### 1.1 Collection Structure (5 marks)
 
-The Yelp Open Dataset was subsetted by filtering for five major U.S. cities: **Philadelphia, Tucson, Tampa, Indianapolis, and Nashville**. This city-based subsetting strategy ensures that all related entities (businesses, reviews, users, tips, checkins) remain interconnected, which is critical for both MongoDB aggregation pipelines and Neo4j graph traversals.
+The Yelp Open Dataset was subsetted by filtering for five major U.S. cities: **Philadelphia, Tucson, Tampa, Indianapolis, and Nashville**. These specific cities were selected to represent geographic diversity across the U.S. and provide non-trivial data volumes while remaining computationally manageable. This city-based subsetting strategy ensures that all related entities (businesses, reviews, users, tips, checkins) remain interconnected, which is critical for both MongoDB aggregation pipelines and Neo4j graph traversals.
 
 The MongoDB database (`yelp_db`) is organized into **four collections**:
 
@@ -52,6 +52,8 @@ The source dataset contains six JSON files, but only four were mapped to collect
 
 #### (c) Indexes
 
+Six separate indexes were defined (exceeding the minimum requirement of four) to optimize the specific queries outlined in Section 5.
+
 | Index | Collection | Type | Query Justification |
 |---|---|---|---|
 | `business_id` | `businesses` | Unique | Queries 2, 4, 7 — serves as the foreign key join target for `$lookup` from `reviews` into `businesses`. Without this index, every `$lookup` would require a full collection scan of 47K documents. |
@@ -83,7 +85,7 @@ The distinction between embedded and referenced relationships in the diagram dir
 
 ## 3. Document Schema Diagram (7 marks)
 
-*(See Document_Schema_Diagram.png)*
+*(See classDiagram.png)*
 
 The document schema diagram shows the internal structure of each collection — fields, data types, nested sub-documents, and cross-collection references.
 
@@ -103,7 +105,7 @@ The document schema diagram shows the internal structure of each collection — 
 
 ## 4. Neo4j Property Graph Model (8 marks)
 
-*(See Graph_Model_Diagram.png)*
+*(See graphDiagram.png)*
 
 ### Node Labels and Properties
 
@@ -160,7 +162,7 @@ The document schema diagram shows the internal structure of each collection — 
 
 Philadelphia leads with a 3.69 average, while Tucson ranks lowest at 3.59. The range is narrow (0.10 stars), indicating all five cities are generally well-rated. The `$match: { review_count: { $gte: 20 } }` filter ensures statistical significance by excluding businesses with too few reviews to be reliable.
 
-**Part B — By Category** (top 5 safest and least-safe):
+**Part B — By Category** (top 5 safest and least-safe, requires ≥20 reviews and ≥10 businesses per category):
 
 | Rank | Safest Categories | Avg Stars | Least-Safe Categories | Avg Stars |
 |---|---|---|---|---|
@@ -181,6 +183,22 @@ The aggregation joins reviews with businesses to extract year and city, then com
 - **Stabilization (2010–2019)**: Ratings converge around 3.7–3.9 as review volume grows into tens of thousands per city per year. The law of large numbers smooths out extremes.
 - **COVID year (2020)**: Review counts drop sharply (e.g., Indianapolis drops from 50,236 in 2019 to 30,620 in 2020), but average ratings increase slightly (3.83 → 3.91). This suggests people only visited places they trusted during lockdowns, creating a positive selection bias.
 - **2022 truncation**: Review counts are dramatically lower (e.g., Indianapolis has only 1,829 reviews in 2022 vs. 34,140 in 2021) — the dataset ends mid-year. This should be noted as a dataset limitation.
+
+**Part B — Category Trends Over Time**
+
+Comparing the average ratings in the early years versus the last three years (for categories with sufficient volume) highlights long-term shifts in industry perception:
+
+| Upward Trending Categories | Trend (+ stars) | Downward Trending Categories | Trend (- stars) |
+|---|---|---|---|
+| Tiki Bars | +0.81 | Hospitals | -1.06 |
+| Limos | +0.70 | Walk-in Clinics | -1.04 |
+| Home Cleaning | +0.67 | Banks & Credit Unions | -1.03 |
+| Tea Rooms | +0.64 | Car Rental | -0.85 |
+| Beaches | +0.63 | Packing Supplies | -0.84 |
+
+**Category trend insights:**
+- **Positive trends:** Experiential and luxury/convenience categories (Tiki Bars, Limos, Tea Rooms) see the highest upward trends. As these industries matured on Yelp, survivor bias and improved customer service standards pushed ratings up.
+- **Negative trends:** Healthcare (Hospitals, Walk-in Clinics) and essential services (Banks, Car Rental) show massive downward trends. As user volume grew over the last decade, platforms like Yelp increasingly became outlets for venting frustrations about broken systemic services.
 
 ### Query 3: Review Volume vs. Average Star Rating (2 marks)
 
@@ -206,13 +224,14 @@ There is a clear **positive correlation**: businesses with more reviews tend to 
 | Lawyers | 3.39 | 4.51 | 575 chars | 1,809 |
 | Insurance | 2.71 | 3.87 | 642 chars | 2,497 |
 | Colleges & Universities | 3.21 | 3.79 | 838 chars | 1,913 |
+| Property Management | 2.53 | 3.46 | 877 chars | 6,243 |
 | Apartments | 2.67 | 2.86 | 961 chars | 15,548 |
 
 **Key insights:**
 - **Counseling & Mental Health** and **Lawyers** top the "useful votes" ranking — these are high-stakes categories where readers specifically seek detailed, written guidance before making decisions. The community recognizes and upvotes these reviews because the stakes (mental health, legal outcomes) justify careful reading.
 - These same categories have the **longest reviews** (906 and 838 avg characters) — emotional investment and decision weight drive longer, more detailed writing.
 - **Low-rated categories** (Insurance 2.71, Apartments 2.67, Property Management 2.53) reflect structural dissatisfaction — these are services people use out of necessity, not choice. The negative sentiment is systemic, not business-specific.
-- The `useful_per_review` metric reveals which categories produce the most community-valued content, independent of volume.
+- The `avg_useful` metric reveals which categories produce the most community-valued content, independent of volume.
 
 ### Query 5: Impact of User Tenure on Reviewing Behaviour (3 marks)
 
@@ -277,6 +296,7 @@ Positive correlation: businesses with more check-ins tend to have higher ratings
 - **Airports** and **Shopping Centers** have the highest average check-ins but only moderate ratings — high foot traffic is driven by necessity, not quality.
 - **Airlines** break the overall positive correlation entirely: 589 avg check-ins but only 2.45 stars — captive customers checking in at airports, not expressing satisfaction.
 - **Gastropubs, Wineries, and Breweries** confirm the positive correlation within experiential/leisure categories — high check-ins *and* high ratings (3.85–4.13), suggesting genuine repeat patronage.
+- **Does the relationship vary by category? Yes.** The positive correlation between checkins and stars does NOT hold universally across categories — Airlines and Airports break it entirely (high checkins, low stars), while Gastropubs and Breweries confirm it (high checkins, high stars). The relationship is highly category-dependent.
 - This validates the **embedding decision**: check-in data being stored on the business document made this entire aggregation a single-collection scan with no joins required.
 
 ---
@@ -298,29 +318,29 @@ Positive correlation: businesses with more check-ins tend to have higher ratings
 | Emi | 8,028 | 1,926 | 4.33 |
 | Frank | 7,945 | 1,006 | 4.08 |
 
-*(See neo4j_query1_graph.png for graph visualization showing the social network clusters of the top connected users.)*
+*(See neo4j_query1_graph.png for graph visualization showing the social network clusters. The two large clusters represent the friend networks of the two most-connected users, Walker and Ruggy, demonstrating the vast scale of their social reach within the subset.)*
 
 **Analysis:** There is no strong correlation between friend count and review count. Walker leads with 14,995 friends but only 585 reviews — a highly social but not prolific reviewer. Conversely, Randy has the most reviews (3,315) with fewer friends (11,026). Social connectivity and review activity appear to be independent dimensions of user behaviour. Mean star ratings cluster tightly (3.62–4.33), suggesting that social influence does not systematically bias rating behaviour.
 
 ### Query 2: Top 3 Businesses per State (3 marks)
 
-| State | Business Name | City | Avg Stars | Reviews |
-|---|---|---|---|---|
-| AZ | Let's Sweat | Tucson | 5.00 | 59 |
-| AZ | Premier Pest Solutions | Tucson | 5.00 | 56 |
-| AZ | Tremendez Jewelry and Repair | Tucson | 4.98 | 55 |
-| FL | AllVitae Health & Chiropractic | Tampa | 5.00 | 67 |
-| FL | Gerardo Luna Photographs | Tampa | 4.98 | 51 |
-| FL | Tampa Bay Rum Company | Tampa | 4.96 | 57 |
-| IN | Alvin Lui | Indianapolis | 5.00 | 50 |
-| IN | Brick & Mortar Barber Shop | Indianapolis | 4.97 | 72 |
-| IN | kOMpose | Indianapolis | 4.97 | 58 |
-| PA | Guldner's Collision Service | Philadelphia | 5.00 | 57 |
-| PA | Campbell Jewelers | Philadelphia | 5.00 | 55 |
-| PA | Sugar Bar Salon | Philadelphia | 5.00 | 55 |
-| TN | Taylor Home Solutions | Nashville | 5.00 | 50 |
-| TN | Music City Cats | Nashville | 5.00 | 54 |
-| TN | Walls Jewelry Repairing | Nashville | 5.00 | 114 |
+| State | Business Name | City | Categories | Avg Stars | Reviews |
+|---|---|---|---|---|---|
+| AZ | Let's Sweat | Tucson | Yoga, Fitness & Instruction, Cycling Classes... | 5.00 | 59 |
+| AZ | Premier Pest Solutions | Tucson | Local Services, Pest Control | 5.00 | 56 |
+| AZ | Tremendez Jewelry and Repair | Tucson | Local Services, Engraving, Watch Repair... | 4.98 | 55 |
+| FL | AllVitae Health & Chiropractic | Tampa | Massage, Skin Care, Health Coach... | 5.00 | 67 |
+| FL | Gerardo Luna Photographs | Tampa | Event Planning, Real Estate Photography... | 4.98 | 51 |
+| FL | Tampa Bay Rum Company | Tampa | Food, Distilleries | 4.96 | 57 |
+| IN | Alvin Lui | Indianapolis | Arts & Entertainment, Adult Entertainment... | 5.00 | 50 |
+| IN | Brick & Mortar Barber Shop | Indianapolis | Barbers, Beauty & Spas | 4.97 | 72 |
+| IN | kOMpose | Indianapolis | Life Coach, Fitness & Instruction, Yoga... | 4.97 | 58 |
+| PA | Guldner's Collision Service | Philadelphia | Automotive, Body Shops | 5.00 | 57 |
+| PA | Campbell Jewelers | Philadelphia | Local Services, Jewelry Repair, Bridal... | 5.00 | 55 |
+| PA | Sugar Bar Salon | Philadelphia | Hair Removal, Beauty & Spas, Sugaring | 5.00 | 55 |
+| TN | Taylor Home Solutions | Nashville | Carpeting, Home Services, HVAC... | 5.00 | 50 |
+| TN | Music City Cats | Nashville | Dog Walkers, Pets, Pet Services... | 5.00 | 54 |
+| TN | Walls Jewelry Repairing | Nashville | Local Services, Watch Repair, Jewelry | 5.00 | 114 |
 
 All top businesses have near-perfect ratings (4.96–5.00) with modest review counts (50–114). This reflects **statistical fragility** — a small number of very satisfied customers can maintain a perfect score. These businesses are genuinely exceptional at their niche, but the results would look different with a higher review threshold.
 
@@ -328,7 +348,7 @@ All top businesses have near-perfect ratings (4.96–5.00) with modest review co
 
 ### Query 3: Top 10 Users Who Reviewed Across the Most Distinct Cities (3 marks)
 
-All 10 users in the results covered **all 5 cities** in the subset (Philadelphia, Tucson, Tampa, Indianapolis, Nashville). Since the dataset was subsetted to exactly 5 cities, 5 is the ceiling — this is a dataset limitation, not a meaningful differentiation. In a full-dataset analysis, this query would reveal travelling reviewers and food tourism patterns.
+All 10 users in the results covered **all 5 cities** in the subset (Philadelphia, Tucson, Tampa, Indianapolis, Nashville). While the assignment permits using this subset, this 5-city ceiling is a notable dataset limitation. Evaluated on the full Yelp dataset with dozens of cities, this structural query would be far more meaningful, acting as an effective tool to identify travelling reviewers and map food tourism patterns across states.
 
 The differentiator is **per-city mean rating variation**. For example:
 - **David**: rates Tampa highly (4.50) but Indianapolis lower (3.60) — possible preference for Tampa's business landscape.
@@ -343,18 +363,18 @@ Note: User "S" appearing in results is a data quality issue in the Yelp source d
 
 | User | Restaurants Reviewed | User Avg in Restaurants | User Overall Avg | Deviation |
 |---|---|---|---|---|
-| Michelle | 714 | 4.01 | — | +0.18 |
-| Brett | 556 | 4.19 | — | +0.37 |
-| Karen | 538 | 3.53 | — | −0.30 |
-| Peter | 486 | 3.31 | — | −0.51 |
-| Mark | 373 | 3.29 | — | −0.54 |
-| Brittany | 371 | 4.30 | — | +0.48 |
+| Michelle | 714 | 4.01 | 4.08 | −0.07 |
+| Boon | 631 | 3.90 | 3.89 | +0.01 |
+| Bill | 608 | 4.05 | 4.07 | −0.02 |
+| Brett | 556 | 4.19 | 4.24 | −0.05 |
+| michelle | 547 | 3.85 | 3.88 | −0.03 |
+| Karen | 538 | 3.53 | 3.62 | −0.10 |
 
 The query compares each user's average rating specifically for Restaurants against their own overall average across all reviews. The deviation reveals **category-specific biases**:
 
-- **Positive deviations** (Brittany +0.48, Ken +0.38, Brett +0.37): These users rate Restaurants higher than their typical behaviour — they either have genuinely better experiences at restaurants or are inherently more generous with food-related ratings.
-- **Negative deviations** (Mark −0.54, Mike −0.52, Peter −0.51): These users are systematically harsher specifically in Restaurants compared to how they review everything else — a category-specific critical lens.
-- **Michelle** reviewed 714 restaurants — an extreme power user with a modest +0.18 deviation, suggesting her restaurant ratings are closely aligned with her general behaviour.
+- **Most users rate restaurants slightly lower** than their overall average. The deviations are largely negative (e.g., Karen −0.10, Michelle −0.07, Brett −0.05), indicating that users apply a more critical lens specifically to restaurants compared to how they review everything else.
+- **Michelle** (the largest power user with 714 restaurant reviews) has a −0.07 deviation, suggesting her restaurant ratings are slightly harsher but largely in line with her general behaviour (4.08 overall average).
+- **Boon** is highly consistent (+0.01 deviation), rating restaurants almost exactly the same as their overall average.
 
 ### Query 5: Reproducing MongoDB Query 1 in Cypher (1 mark)
 

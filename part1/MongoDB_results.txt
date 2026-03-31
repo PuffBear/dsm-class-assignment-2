@@ -1,0 +1,517 @@
+test> use yelp_db
+switched to db yelp_db
+yelp_db> db.businesses.aggregate([
+|   // Filter out businesses with low review counts to ensure statistical significance
+|   { $match: { review_count: { $gte: 20 } } },
+|   { $group: {
+|       _id: { city: "$city" },
+|       avg_stars: { $avg: "$stars" },
+|       total_reviews: { $sum: "$review_count" },
+|       business_count: { $sum: 1 }
+|   }},
+|   { $sort: { avg_stars: -1 } }
+| ])
+[
+  {
+    _id: { city: 'Philadelphia' },
+    avg_stars: 3.692151650811416,
+    total_reviews: 863550,
+    business_count: 7148
+  },
+  {
+    _id: { city: 'Indianapolis' },
+    avg_stars: 3.656892846177464,
+    total_reviews: 307878,
+    business_count: 3257
+  },
+  {
+    _id: { city: 'Nashville' },
+    avg_stars: 3.6467958271236958,
+    total_reviews: 405627,
+    business_count: 3355
+  },
+  {
+    _id: { city: 'Tampa' },
+    avg_stars: 3.6343054489639295,
+    total_reviews: 390233,
+    business_count: 3909
+  },
+  {
+    _id: { city: 'Tucson' },
+    avg_stars: 3.5917466908902154,
+    total_reviews: 335105,
+    business_count: 3853
+  }
+]
+yelp_db> db.reviews.aggregate([
+|   { $lookup: {
+|       from: "businesses",
+|       localField: "business_id",
+|       foreignField: "business_id",
+|       as: "bus"
+|   }},
+|   { $unwind: "$bus" },
+|   { $addFields: { year: { $substr: ["$date", 0, 4] } } }, // Extract year from review date string "YYYY-MM-DD HH:MM:SS"
+|   { $group: {
+|       _id: { city: "$bus.city", year: "$year" },
+|       avg_stars: { $avg: "$stars" },
+|       count: { $sum: 1 }
+|   }},
+|   { $sort: { "_id.city": 1, "_id.year": 1 } }
+| ])
+[
+  {
+    _id: { city: 'Indianapolis', year: '2005' },
+    avg_stars: 4.714285714285714,
+    count: 7
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2006' },
+    avg_stars: 4.256944444444445,
+    count: 144
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2007' },
+    avg_stars: 4.028747433264887,
+    count: 487
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2008' },
+    avg_stars: 3.9142722562411683,
+    count: 2123
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2009' },
+    avg_stars: 3.7482582443102648,
+    count: 2153
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2010' },
+    avg_stars: 3.780350312059593,
+    count: 4967
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2011' },
+    avg_stars: 3.7997137404580155,
+    count: 10480
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2012' },
+    avg_stars: 3.7306458247634717,
+    count: 12155
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2013' },
+    avg_stars: 3.743230974632844,
+    count: 18725
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2014' },
+    avg_stars: 3.7498787192755496,
+    count: 24736
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2015' },
+    avg_stars: 3.778613816405917,
+    count: 35219
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2016' },
+    avg_stars: 3.811238189955246,
+    count: 40220
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2017' },
+    avg_stars: 3.8449228122594956,
+    count: 44178
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2018' },
+    avg_stars: 3.845995516608926,
+    count: 49070
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2019' },
+    avg_stars: 3.828708495899355,
+    count: 50236
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2020' },
+    avg_stars: 3.9134879163945135,
+    count: 30620
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2021' },
+    avg_stars: 3.871236086701816,
+    count: 34140
+  },
+  {
+    _id: { city: 'Indianapolis', year: '2022' },
+    avg_stars: 3.9037725533078187,
+    count: 1829
+  },
+  {
+    _id: { city: 'Nashville', year: '2005' },
+    avg_stars: 4.066666666666666,
+    count: 15
+  },
+  {
+    _id: { city: 'Nashville', year: '2006' },
+    avg_stars: 3.910179640718563,
+    count: 167
+  }
+]
+Type "it" for more
+yelp_db> db.businesses.aggregate([
+|   { $bucket: {
+|       groupBy: "$review_count",
+|       boundaries: [0, 10, 50, 100, 500, 1000, 5000],
+|       default: "5000+",
+|       output: {
+|           avg_stars: { $avg: "$stars" },
+|           count: { $sum: 1 }
+|       }
+|   }},
+|   { $sort: { "_id": 1 } }
+| ])
+[
+  { _id: 0, avg_stars: 3.591833242059146, count: 14608 },
+  { _id: 10, avg_stars: 3.5480987901391794, count: 21986 },
+  { _id: 50, avg_stars: 3.6572289156626505, count: 4980 },
+  { _id: 100, avg_stars: 3.788361320208454, count: 5181 },
+  { _id: 500, avg_stars: 3.974437627811861, count: 489 },
+  { _id: 1000, avg_stars: 4.067164179104478, count: 134 },
+  { _id: '5000+', avg_stars: 4.5, count: 2 }
+]
+yelp_db> db.reviews.aggregate([
+|   { $lookup: { from: "businesses", localField: "business_id", foreignField: "business_id", as: "bus" } },
+|   { $unwind: "$bus" },
+|   // Categories are a comma separated string, split them
+|   { $addFields: { category_array: { $split: ["$bus.categories", ", "] } } },
+|   { $unwind: "$category_array" },
+|   { $group: {
+|       _id: "$category_array",
+|       avg_stars: { $avg: "$stars" },
+|       avg_useful: { $avg: "$useful" },
+|       avg_text_length: { $avg: { $strLenCP: "$text" } },
+|       total_reviews: { $sum: 1 }
+|   }},
+|   // Only keep categories with a substantial number of reviews
+|   { $match: { total_reviews: { $gte: 1000 } } },
+|   { $sort: { avg_useful: -1 } },
+|   { $limit: 20 }
+| ])
+[
+  {
+    _id: 'Counseling & Mental Health',
+    avg_stars: 3.062043795620438,
+    avg_useful: 4.5175182481751825,
+    avg_text_length: 905.6240875912408,
+    total_reviews: 1370
+  },
+  {
+    _id: 'Lawyers',
+    avg_stars: 3.39469320066335,
+    avg_useful: 4.511885019347706,
+    avg_text_length: 574.7899391929243,
+    total_reviews: 1809
+  },
+  {
+    _id: 'Insurance',
+    avg_stars: 2.71205446535843,
+    avg_useful: 3.867040448538246,
+    avg_text_length: 641.8334000800961,
+    total_reviews: 2497
+  },
+  {
+    _id: 'Colleges & Universities',
+    avg_stars: 3.212232096184004,
+    avg_useful: 3.791427077888134,
+    avg_text_length: 838.3847360167276,
+    total_reviews: 1913
+  },
+  {
+    _id: 'Orthopedists',
+    avg_stars: 3.1212355212355214,
+    avg_useful: 3.572972972972973,
+    avg_text_length: 811.796138996139,
+    total_reviews: 1295
+  },
+  {
+    _id: 'Animal Shelters',
+    avg_stars: 3.7893139040680026,
+    avg_useful: 3.493624772313297,
+    avg_text_length: 829.2313296903461,
+    total_reviews: 1647
+  },
+  {
+    _id: 'Dermatologists',
+    avg_stars: 3.477511961722488,
+    avg_useful: 3.48755980861244,
+    avg_text_length: 692.4535885167464,
+    total_reviews: 2090
+  },
+  {
+    _id: 'Property Management',
+    avg_stars: 2.5263495114528274,
+    avg_useful: 3.4569918308505527,
+    avg_text_length: 876.9343264456191,
+    total_reviews: 6243
+  },
+  {
+    _id: 'Hospitals',
+    avg_stars: 2.7874167919261326,
+    avg_useful: 3.3639682198840455,
+    avg_text_length: 847.0697874167919,
+    total_reviews: 4657
+  },
+  {
+    _id: 'Cosmetic Surgeons',
+    avg_stars: 3.8464769015398974,
+    avg_useful: 3.3341110592627157,
+    avg_text_length: 691.1306579561362,
+    total_reviews: 2143
+  },
+  {
+    _id: 'Churches',
+    avg_stars: 4.381338742393509,
+    avg_useful: 3.23394185260311,
+    avg_text_length: 669.6470588235294,
+    total_reviews: 1479
+  },
+  {
+    _id: 'Periodontists',
+    avg_stars: 3.69281914893617,
+    avg_useful: 2.980496453900709,
+    avg_text_length: 692.3656914893617,
+    total_reviews: 2256
+  },
+  {
+    _id: 'Obstetricians & Gynecologists',
+    avg_stars: 2.903010033444816,
+    avg_useful: 2.866698518872432,
+    avg_text_length: 858.4558050645007,
+    total_reviews: 2093
+  },
+  {
+    _id: 'Apartments',
+    avg_stars: 2.6701183431952664,
+    avg_useful: 2.8621687676871623,
+    avg_text_length: 960.698224852071,
+    total_reviews: 15548
+  },
+  {
+    _id: 'Religious Organizations',
+    avg_stars: 4.348261076703192,
+    avg_useful: 2.8580276322058125,
+    avg_text_length: 646.5936160076227,
+    total_reviews: 2099
+  },
+  {
+    _id: 'Real Estate Services',
+    avg_stars: 3.285820203892493,
+    avg_useful: 2.8550509731232623,
+    avg_text_length: 790.3786839666358,
+    total_reviews: 5395
+  },
+  {
+    _id: 'Real Estate',
+    avg_stars: 2.928993855606759,
+    avg_useful: 2.7465437788018434,
+    avg_text_length: 856.8402841781874,
+    total_reviews: 26040
+  },
+  {
+    _id: 'Internal Medicine',
+    avg_stars: 3.404923076923077,
+    avg_useful: 2.694769230769231,
+    avg_text_length: 757.016,
+    total_reviews: 1625
+  },
+  {
+    _id: 'Endodontists',
+    avg_stars: 3.6457335961700927,
+    avg_useful: 2.6899464939453677,
+    avg_text_length: 702.7592227541537,
+    total_reviews: 3551
+  },
+  {
+    _id: 'Gun/Rifle Ranges',
+    avg_stars: 3.6761710794297353,
+    avg_useful: 2.6578411405295315,
+    avg_text_length: 651.1900882552613,
+    total_reviews: 1473
+  }
+]
+yelp_db> db.users.aggregate([
+|   { $addFields: { 
+|       join_year: { $substr: ["$yelping_since", 0, 4] },
+|       current_year: "2023", // Assuming dataset ending context
+|       tenure_years: { 
+|           $subtract: [ 2023, { $toInt: { $substr: ["$yelping_since", 0, 4] } } ] 
+|       }
+|   }},
+|   { $bucket: {
+|       groupBy: "$tenure_years",
+|       boundaries: [0, 2, 5, 10, 15],
+|       default: "15+",
+|       output: {
+|           avg_stars: { $avg: "$average_stars" },
+|           avg_useful: { $avg: "$useful" },
+|           total_users: { $sum: 1 }
+|       }
+|   }}
+| ])
+[
+  {
+    _id: 0,
+    avg_stars: 2.7856497797356825,
+    avg_useful: 0.15969162995594713,
+    total_users: 908
+  },
+  {
+    _id: 2,
+    avg_stars: 3.3046201810166047,
+    avg_useful: 4.241433299913474,
+    total_users: 72811
+  },
+  {
+    _id: 5,
+    avg_stars: 3.646746366689822,
+    avg_useful: 22.4868996666094,
+    total_users: 401631
+  },
+  {
+    _id: 10,
+    avg_stars: 3.7369472059162243,
+    avg_useful: 91.39263459970245,
+    total_users: 321286
+  },
+  {
+    _id: '15+',
+    avg_stars: 3.756388408112546,
+    avg_useful: 431.73381263036435,
+    total_users: 22533
+  }
+]
+yelp_db> db.users.aggregate([
+|   { $addFields: { 
+|       is_elite: { 
+|           $cond: { if: { $in: ["", { $split: [{ $ifNull: ["$elite", ""] }, ","] }] }, then: false, else: true }
+|       }
+|   }},
+|   { $group: {
+|       _id: "$is_elite",
+|       avg_user_stars: { $avg: "$average_stars" },
+|       avg_useful_votes: { $avg: "$useful" },
+|       total_users: { $sum: 1 }
+|   }}
+| ])
+[
+  {
+    _id: false,
+    avg_user_stars: 3.6313845934982694,
+    avg_useful_votes: 14.473652955640594,
+    total_users: 766196
+  },
+  {
+    _id: true,
+    avg_user_stars: 3.977642006305099,
+    avg_useful_votes: 704.928567383384,
+    total_users: 52973
+  }
+]
+yelp_db> db.businesses.aggregate([
+|   { $addFields: { total_checkins: { $size: { $ifNull: ["$checkins", []] } } } },
+|   { $bucket: {
+|       groupBy: "$total_checkins",
+|       boundaries: [0, 10, 50, 200, 1000],
+|       default: "1000+",
+|       output: {
+|           avg_stars: { $avg: "$stars" },
+|           count: { $sum: 1 }
+|       }
+|   }},
+|   { $sort: { "_id": 1 } }
+| ])
+[
+  { _id: 0, avg_stars: 3.589345348529022, count: 18865 },
+  { _id: 10, avg_stars: 3.5757597684515194, count: 13820 },
+  { _id: 50, avg_stars: 3.6084144247281054, count: 8735 },
+  { _id: 200, avg_stars: 3.687648456057007, count: 5052 },
+  { _id: '1000+', avg_stars: 3.8948237885462555, count: 908 }
+]
+================================================================================
+UPDATED QUERY RESULTS (re-run 2026-03-30)
+================================================================================
+
+=== Q1 PART B: Categories by avg stars (businesses with ≥20 reviews, ≥10 in category) ===
+--- TOP 10 ---
+{ _id: 'Barre Classes', avg_stars: 4.714285714285714, total_reviews: 1153, business_count: 21 }
+{ _id: 'Home Window Tinting', avg_stars: 4.625, total_reviews: 622, business_count: 16 }
+{ _id: 'Challenge Courses', avg_stars: 4.607142857142857, total_reviews: 1203, business_count: 14 }
+{ _id: 'Event Photography', avg_stars: 4.605263157894737, total_reviews: 639, business_count: 19 }
+{ _id: 'Dog Walkers', avg_stars: 4.6022727272727275, total_reviews: 1561, business_count: 44 }
+{ _id: 'Reiki', avg_stars: 4.588235294117647, total_reviews: 794, business_count: 17 }
+{ _id: 'Beer Tours', avg_stars: 4.583333333333333, total_reviews: 1419, business_count: 12 }
+{ _id: 'Historical Tours', avg_stars: 4.583333333333333, total_reviews: 3787, business_count: 24 }
+{ _id: 'Salvadoran', avg_stars: 4.583333333333333, total_reviews: 1067, business_count: 12 }
+{ _id: 'Distilleries', avg_stars: 4.5606060606060606, total_reviews: 3270, business_count: 33 }
+--- BOTTOM 10 ---
+{ _id: 'Television Service Providers', avg_stars: 1.6296296296296295, total_reviews: 1910, business_count: 27 }
+{ _id: 'Utilities', avg_stars: 1.7727272727272727, total_reviews: 756, business_count: 11 }
+{ _id: 'Internet Service Providers', avg_stars: 1.941860465116279, total_reviews: 2825, business_count: 43 }
+{ _id: 'Truck Rental', avg_stars: 2.1842105263157894, total_reviews: 1210, business_count: 19 }
+{ _id: 'Banks & Credit Unions', avg_stars: 2.2, total_reviews: 1033, business_count: 25 }
+{ _id: 'Post Offices', avg_stars: 2.25531914893617, total_reviews: 1574, business_count: 47 }
+{ _id: 'Airlines', avg_stars: 2.357142857142857, total_reviews: 3410, business_count: 35 }
+{ _id: 'University Housing', avg_stars: 2.3703703703703702, total_reviews: 1003, business_count: 27 }
+{ _id: 'Financial Advising', avg_stars: 2.4, total_reviews: 500, business_count: 10 }
+{ _id: 'Car Rental', avg_stars: 2.4732142857142856, total_reviews: 11686, business_count: 112 }
+
+=== Q2 PART B: Category trends (early 3 years vs late 3 years, ≥1000 total reviews) ===
+--- TOP 5 UPWARD ---
+{ category: 'Tiki Bars', early_avg: 3.3, late_avg: 4.12, change: 0.81, total_reviews: 1370 }
+{ category: 'Limos', early_avg: 3.04, late_avg: 3.74, change: 0.7, total_reviews: 1386 }
+{ category: 'Home Cleaning', early_avg: 3.19, late_avg: 3.86, change: 0.67, total_reviews: 6219 }
+{ category: 'Tea Rooms', early_avg: 3.77, late_avg: 4.41, change: 0.64, total_reviews: 6482 }
+{ category: 'Beaches', early_avg: 3.54, late_avg: 4.18, change: 0.63, total_reviews: 1919 }
+--- TOP 5 DOWNWARD ---
+{ category: 'Hospitals', early_avg: 3.46, late_avg: 2.4, change: -1.06, total_reviews: 4540 }
+{ category: 'Walk-in Clinics', early_avg: 3.76, late_avg: 2.71, change: -1.04, total_reviews: 1127 }
+{ category: 'Banks & Credit Unions', early_avg: 3.1, late_avg: 2.07, change: -1.03, total_reviews: 2878 }
+{ category: 'Car Rental', early_avg: 3.04, late_avg: 2.19, change: -0.85, total_reviews: 13290 }
+{ category: 'Packing Supplies', early_avg: 3.83, late_avg: 2.98, change: -0.84, total_reviews: 1743 }
+
+=== Q6 UPDATED: Elite vs non-elite (joins reviews to users for actual review metrics) ===
+{
+  _id: false (non-elite),
+  avg_star_rating: 3.696523490111883,
+  avg_review_char_length: 507.1530869860913,
+  avg_useful_votes: 0.823835495872728,
+  total_reviews: 1874725
+}
+{
+  _id: true (elite),
+  avg_star_rating: 3.9768548389203366,
+  avg_review_char_length: 779.5505808167221,
+  avg_useful_votes: 2.1140696875579574,
+  total_reviews: 765646
+}
+
+=== Q7 PART B: By category — avg checkins and avg stars (≥50 businesses) ===
+{ _id: 'Airports', avg_checkins: 2837.61, avg_stars: 3.10, business_count: 57 }
+{ _id: 'Shopping Centers', avg_checkins: 1371.49, avg_stars: 3.54, business_count: 80 }
+{ _id: 'Gastropubs', avg_checkins: 679.77, avg_stars: 3.85, business_count: 189 }
+{ _id: 'Cheese Shops', avg_checkins: 653.51, avg_stars: 4.26, business_count: 55 }
+{ _id: 'Airlines', avg_checkins: 589.03, avg_stars: 2.45, business_count: 59 }
+{ _id: 'Wineries', avg_checkins: 537.53, avg_stars: 4.13, business_count: 73 }
+{ _id: 'Irish', avg_checkins: 490.08, avg_stars: 3.61, business_count: 73 }
+{ _id: 'Dim Sum', avg_checkins: 487.96, avg_stars: 3.64, business_count: 69 }
+{ _id: 'Pubs', avg_checkins: 467.69, avg_stars: 3.69, business_count: 583 }
+{ _id: 'Breweries', avg_checkins: 459.56, avg_stars: 4.09, business_count: 262 }
+{ _id: 'Szechuan', avg_checkins: 459.54, avg_stars: 3.77, business_count: 54 }
+{ _id: 'Cinema', avg_checkins: 438.78, avg_stars: 3.68, business_count: 128 }
+{ _id: 'Landmarks & Historical Buildings', avg_checkins: 434.65, avg_stars: 4.14, business_count: 124 }
+{ _id: 'Tapas Bars', avg_checkins: 434.46, avg_stars: 3.82, business_count: 79 }
+{ _id: 'Chocolatiers & Shops', avg_checkins: 407.96, avg_stars: 4.07, business_count: 93 }
