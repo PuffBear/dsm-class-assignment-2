@@ -1,0 +1,168 @@
+Department of Computer Science, Ashoka University
+
+Data Science and Management: CS-3510
+
+Assignment 2 - Part 2
+Assignment Type
+
+Marks
+
+Assign Date
+
+Submit Date
+
+Individual
+
+75
+
+Mar 28, 2026
+
+23:59, Apr 6, 2026
+
+Part 1 of this assignment dealt with loading the Yelp Open Dataset into NoSQL databases using MongoDB and Neo4j, and performing simple querying operations on those databases. Part
+2 requires you to perform more complex operations on the databases created in Part 1. Some
+modifications to your database might be necessary (such as loading additional data) to support the
+questions given here. You are expected to make the required changes to your DB.
+Submission Requirements:
+• Submit a .zip file which includes the following:
+– A written PDF report containing all queries, the corresponding results, visualizations,
+explanation/justification of the results. All details of the Predictive Modelling task must
+also be included here. (10 marks for a well-written and organised report)
+– Code/notebooks for the predictive modelling task.
+
+MongoDB Querying
+
+(15 marks)
+
+For each query, include the complete pipeline and a concise interpretation of the results. You are
+encouraged to visualize the query results wherever possible for easier interpretation. Remember,
+an image speaks a thousand words.
+1. Perform a cohort analysis of user reviewing behaviour. Define cohorts by the year users joined
+Yelp (yelping since). For each annual cohort, compute: the mean and standard deviation
+of star ratings given, the mean review character length, the mean useful votes received per
+review, and the proportion of reviews in each star category (1–5). Identify which cohort gives
+the highest mean star rating and which produces the highest mean useful votes per review.
+(5 marks)
+2. For each business category with at least 500 reviews, compute the month-over-month change
+in average star rating across the full temporal range of the dataset (or whatever range of data
+you can load in your system). Measure trend consistency as the proportion of consecutive
+month-pairs showing an increase (or decrease) in average rating. Report the three categories
+with the most consistent upward trend and the three with the most consistent downward
+trend.
+(5 marks)
+3. Using the check-in data, classify businesses into three groups by total check-in count: top
+quartile (high), middle two quartiles (medium), and bottom quartile (low). For each check-in
+frequency class and for each of the top 10 business categories by total review count (across
+the dataset), compute the mean star rating, mean review count, and ratio of tips to reviews.
+Present the results as a cross-tabulation.
+(5 marks)
+
+1
+
+Department of Computer Science, Ashoka University
+
+Neo4j / Cypher Querying
+
+Data Science and Management: CS-3510
+
+(35 marks)
+
+Using Cypher and the Neo4j Graph Data Science (GDS) library, answer the following. For each
+query, include the complete Cypher statement(s), the GDS procedure calls where applicable, and
+a concise interpretation of the results. Visualize the results wherever applicable.
+1. Project a graph of User and Business nodes connected by a directed edge from user to
+business for each review, weighted by the review’s star rating. Run the PageRank algorithm
+(GDS) on this projection with a minimum of 20 iterations. Report the top 15 businesses
+by PageRank score alongside their total review count and average star rating. Compute the
+Spearman rank correlation between (a) the PageRank ranking and the review-count ranking,
+and (b) the PageRank ranking and the average-star-rating ranking. Identify and explain
+businesses that rank substantially higher or lower under PageRank than under the simpler
+metrics.
+(7 marks)
+2. Run the Louvain community detection algorithm (GDS) on the FRIENDS WITH social graph.
+For each detected community with at least 25 members, report: (1) the community size; (2)
+the top three states by number of business reviews written by members of that community; (3)
+the top three business categories reviewed by members; (4) and the geographic concentration
+index, defined as the fraction of all reviews by community members directed at businesses in
+the single most common state. Rank communities by geographic concentration and identify
+the most and least geographically concentrated.
+(7 marks)
+3. For each city with at least 20 businesses, use the Node Similarity algorithm (GDS, Jaccard)
+on Business nodes, where two businesses are considered to share an audience if they have
+at least 5 common reviewers (if the number of businesses satisfying this criterion is not high
+enough for meaningful analysis, reduce the threshold to 4 or 3). Compute the mean intracategory Jaccard similarity score for each category within each city — this measures how
+much businesses in the same category and city share their reviewer base, serving as a proxy
+for market saturation. A high score indicates that the same pool of customers is reviewing
+all businesses in that category (saturated market); a low score indicates each business has a
+largely distinct audience (fragmented market). Report the following:
+(a) The five city–category combinations with the highest mean intra-category similarity
+(most saturated markets) and the five with the lowest (most fragmented), excluding
+combinations with fewer than 5 businesses.
+(b) For the most and least saturated city–category combinations identified above, compare
+the mean star rating, standard deviation of star ratings, and mean review count per business. Discuss whether saturated markets show higher rating variance than fragmented
+ones, and what this might imply for a business entering that market.
+(7 marks)
+4. Run the Betweenness Centrality algorithm (GDS) on the FRIENDS WITH graph. Identify the
+top 20 users by betweenness centrality score and the top 20 by degree centrality. Report
+the size of the overlap between these two sets. For users in the high-betweenness but lowdegree group (top 20 betweenness, outside top 20 degree), compute and compare against the
+high-degree group: mean review count, number of distinct cities in which they have reviewed
+
+2
+
+Department of Computer Science, Ashoka University
+
+Data Science and Management: CS-3510
+
+businesses, and number of distinct categories reviewed. Discuss what the betweenness metric
+reveals about these users that degree alone does not.
+(7 marks)
+5. Using the GDS link prediction pipeline, train a model to provide a recommendation to the user
+on which restaurant they should visit next. Here, visiting a restaurant is modelled as writing a
+review for it. Frame this as predicting missing edges in a bipartite User–Business projection,
+using a chronological 80/20 train/test split where each user’s most recent review forms the
+test set. You may take into account the following features (and additional features beyond
+them): the user’s own preferences estimated through their visits and reviews, the user’s
+social relations, community membership, review behaviour of the user’s friends toward the
+candidate business, business-level properties, and user–business affinity (e.g. shared category
+or city preferences). Report AUC-ROC and Precision@10 on the test set, the five most
+predictive features, and for 5 sampled users, the top 3 recommended businesses produced
+by the model. Discuss what role social graph features play relative to user–business affinity
+features in driving predictions.
+(7 marks)
+
+Predictive Modelling
+
+(15 marks)
+
+Develop a regression model to predict the number of useful votes a review will receive. Data must
+be extracted from the MongoDB and/or Neo4j databases you have already built. You may use any
+language or framework including the Neo4j GDS library. Visualize the results & findings through
+figures, plots, tables wherever necessary.
+1. Feature engineering. Extract a feature set for each review. Your feature set must include
+at least one feature from each of the following three groups:
+(5 marks)
+(a) Review-level features — e.g. star rating, review character length, word count, or recency
+of the review.
+(b) User-level features — e.g. the reviewing user’s tenure, total review count, elite status,
+or mean star rating given.
+(c) Graph-derived features — at least two features computed from the graph, such as the
+reviewing user’s degree or PageRank score (from Section 6.1), community membership
+(from Section 6.2), or the business’s mean cross-category Jaccard similarity (from Section
+6.3). Justify why each graph feature is expected to be predictive of useful vote count.
+2. Model training and evaluation. Train and evaluate your model using a train/test split,
+stratified by useful vote count bucket (0, 1–5, 6–20, 21+) to ensure rare high-vote reviews
+appear in both splits. Report RMSE, MAE, and R2 on the test set. Because the useful vote
+distribution is heavily right-skewed, also report these metrics separately for reviews with zero
+useful votes, 1–5 useful votes, and 6 or more useful votes. Justify your modelling, training
+objectives, and evaluation choices.
+(5 marks)
+3. Feature importance and discussion. Report feature importances or equivalent (e.g.
+coefficients, permutation importance, or SHAP values). Identify the three most predictive
+features and provide a data-supported explanation for each. Discuss one limitation of the
+model and one potential consequence if such a model were used to rank or surface reviews on
+the platform.
+(5 marks)
+
+3
+
+
