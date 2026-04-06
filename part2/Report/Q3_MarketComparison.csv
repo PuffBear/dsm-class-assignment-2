@@ -1,0 +1,11 @@
+city,category,mean_stars,std_stars,mean_rev_per_biz,mean_jaccard,market_type
+Indianapolis,Public Art,4.133,1.288,15.0,0.2066,saturated
+Nashville,Mass Media,3.212,1.716,16.5,0.1891,saturated
+Indianapolis,Playgrounds,4.144,1.063,15.0,0.1846,saturated
+Indianapolis,Parks,4.365,0.954,37.1,0.1823,saturated
+Tampa,Amusement Parks,3.511,1.511,125.9,0.1773,saturated
+Tampa,Taxis,2.674,1.899,43.4,0.019,fragmented
+Philadelphia,Taxis,2.083,1.599,74.5,0.0189,fragmented
+Philadelphia,Airlines,2.349,1.655,60.4,0.0188,fragmented
+Tucson,Nail Technicians,3.788,1.623,112.2,0.0185,fragmented
+Philadelphia,Hotels,3.276,1.448,144.6,0.0159,fragmented

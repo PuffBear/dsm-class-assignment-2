@@ -1,0 +1,238 @@
+community_id,size,top3_states,top3_categories,geo_concentration_index,total_reviews_sampled
+2458255,25,FL,"Colombian, Restaurants, Latin American",1.0,1
+5034373,31,TN,"Barbeque, Restaurants, Beer Bar",1.0,1
+1192250,34,PA,"Breakfast & Brunch, Restaurants, Caterers",1.0,1
+3910924,34,TN,"Nightlife, Bars, Music Venues",1.0,2
+2166820,34,TN,"Auto Repair, Towing, Automotive",1.0,1
+573179,34,PA,"Restaurants, Nightlife, Bars",1.0,14
+177452,35,TN,"American (Traditional), Restaurants, Comfort Food",1.0,4
+5920193,35,TN,"Japanese, Sushi Bars, Restaurants",1.0,1
+11113416,36,PA,"Restaurants, Hot Pot, Barbeque",1.0,1
+8010388,37,PA,"Restaurants, Food, Latin American",1.0,29
+7513118,38,PA,"Ramen, Restaurants, Food",1.0,1
+6770657,38,AZ,"Nail Salons, Beauty & Spas",1.0,1
+12609271,39,PA,"American (Traditional), Nightlife, Bars",1.0,1
+5488112,39,TN,"Restaurants, Bars, American (New)",1.0,2
+8911489,39,PA,"Sandwiches, Restaurants",1.0,1
+6348899,39,FL,"American (Traditional), Caterers, Patisserie/Cake Shop",1.0,1
+9278954,41,TN,"American (Traditional), Restaurants, Burgers",1.0,1
+4064058,42,AZ,"Venues & Event Spaces, Beer Bar, Hotels",1.0,1
+12445502,45,PA,"Hair Salons, Beauty & Spas",1.0,1
+85480,45,TN,"Mexican, Restaurants",1.0,1
+11621288,48,TN,"Restaurants, Chicken Wings, Sports Bars",1.0,1
+9807728,51,TN,"Food, Burgers, Coffee & Tea",1.0,2
+4917977,54,PA,"Cajun/Creole, Restaurants, Seafood",1.0,1
+10593429,60,TN,"Southern, Restaurants, Breakfast & Brunch",1.0,1
+4250256,62,IN,"Food, Coffee & Tea",1.0,1
+10331937,62,TN,"Thai, Restaurants",1.0,1
+8413990,66,PA,"Bars, Nightlife, Lounges",1.0,1
+2178998,72,TN,"Salvadoran, Restaurants, Latin American",1.0,1
+3666104,77,AZ,"Restaurants, Steakhouses, Tacos",1.0,2
+5147729,32,FL,"Juice Bars & Smoothies, Food, Ice Cream & Frozen Yogurt",1.0,2
+3891571,34,PA,"Pizza, Restaurants",1.0,1
+7763003,26,PA,"Japanese, Restaurants, Noodles",1.0,1
+1814679,25,IN,"Cajun/Creole, Seafood, Sushi Bars",1.0,1
+10730800,25,PA,"Juice Bars & Smoothies, Food, Bubble Tea",1.0,1
+13718337,31,FL,"Tacos, Mexican, Restaurants",1.0,1
+1433189,26,TN,"Restaurants, Dive Bars, Barbeque",1.0,2
+168926,27,TN,"Massage Therapy, Massage, Health & Medical",1.0,1
+6498335,27,FL,"Restaurants, Japanese, Diners",1.0,14
+4230872,27,PA,"Restaurants, Food, Coffee & Tea",1.0,4
+10987302,25,TN,"Seafood, Restaurants",1.0,2
+237227,27,AZ,"Beauty & Spas, Nail Salons, Health & Medical",1.0,9
+7543653,28,PA,"Basque, Restaurants, Spanish",1.0,1
+11941035,25,FL,"Restaurants, Bars, Peruvian",1.0,2
+5604778,28,PA,"Sushi Bars, Japanese, Restaurants",1.0,1
+1773515,28,PA,"Restaurants, American (Traditional), Pizza",1.0,3
+12593349,28,PA,"Honduran, Restaurants, Mexican",1.0,1
+5988134,25,AZ,"Hotels & Travel, Hotels, Venues & Event Spaces",1.0,1
+1363510,30,PA,"Local Flavor, Arts & Entertainment, Museums",1.0,3
+1711871,25,AZ,"Restaurants, Seafood, Barbeque",1.0,1
+3390901,30,PA,"Dance Clubs, Restaurants, Nightlife",1.0,1
+4680325,25,PA,"Chinese, Dim Sum, Restaurants",1.0,1
+1967056,30,FL,"Venezuelan, Middle Eastern, Spanish",1.0,1
+2704420,25,FL,"Cuban, Restaurants, Sandwiches",1.0,1
+128322,31,"PA, TN","Restaurants, Food, American (Traditional)",0.9583,24
+7586495,28,"FL, IN","Restaurants, Food, American (Traditional)",0.9286,14
+318563,1243627,"PA, TN, FL","Restaurants, Food, Nightlife",0.9173,222377
+9312902,73,"FL, IN, AZ","Restaurants, American (New), American (Traditional)",0.9118,68
+1683728,46,"AZ, FL","Restaurants, Chinese, American (Traditional)",0.8889,9
+7423378,291,"TN, PA","Restaurants, Nightlife, Bars",0.8889,9
+1694659,27,"PA, TN","Restaurants, Food, Nightlife",0.8824,17
+10855396,49,"FL, PA","Restaurants, Mediterranean, Bars",0.8824,17
+1479344,244,"IN, TN, PA","Restaurants, Food, Bars",0.875,40
+7929562,1125935,"IN, TN, PA","Restaurants, Food, Nightlife",0.8554,246902
+6461690,1260206,"FL, TN, PA","Restaurants, Food, Nightlife",0.8489,135497
+6501570,1265503,"TN, FL, PA","Restaurants, Nightlife, Bars",0.8343,117357
+7695588,37,"IN, FL","Shopping, Food, Fashion",0.8333,6
+5451194,34,"FL, TN","Restaurants, Food, Burgers",0.8333,6
+6241227,85,"TN, PA","Restaurants, American (Traditional), Bars",0.8333,6
+6347137,228,"AZ, FL, PA","Restaurants, Food, Coffee & Tea",0.8333,12
+1139730,1607451,"AZ, TN, PA","Restaurants, Food, Nightlife",0.8213,159314
+676638,128,"PA, TN","Restaurants, Nightlife, Bars",0.8,5
+4384243,104,"TN, AZ","Restaurants, American (Traditional), American (New)",0.8,5
+11021539,34,"PA, TN","Arts & Entertainment, Event Planning & Services, Cinema",0.8,5
+1790078,26,"PA, AZ, IN","Restaurants, American (New), American (Traditional)",0.7895,19
+3861708,1162988,"PA, TN, FL","Restaurants, Food, Nightlife",0.7884,100301
+939455,146,"FL, PA, TN","Restaurants, Food, Nightlife",0.76,50
+4004820,32,"FL, TN","Restaurants, Active Life, Breakfast & Brunch",0.75,4
+12755641,32,"FL, TN","Hotels & Travel, Food, Bars",0.75,4
+1657791,26,"PA, IN","Restaurants, Vegetarian, Burgers",0.75,4
+3092161,27,"FL, PA","Restaurants, Food, Sandwiches",0.75,4
+719282,183,"TN, AZ, PA","Restaurants, Food, Nightlife",0.7308,26
+6135978,361,"AZ, FL, TN","Restaurants, Food, Bars",0.7273,55
+10045022,1095,"PA, TN, FL","Restaurants, Nightlife, Bars",0.7,30
+864469,1233,"PA, AZ, TN","Restaurants, Food, American (New)",0.6957,46
+84623,57,"FL, PA","Restaurants, Wine & Spirits, American (Traditional)",0.6667,3
+568691,31,"PA, FL","Restaurants, Chicken Wings, Fast Food",0.6667,3
+2204904,65,"FL, PA","Restaurants, Thai, Sushi Bars",0.6667,3
+2493746,789656,"PA, FL, TN","Restaurants, Food, Nightlife",0.6655,58152
+1208647,50,"FL, TN, AZ","Restaurants, American (New), Nightlife",0.6471,17
+6170008,573,"FL, TN, IN","Restaurants, Food, Hotels & Travel",0.6364,11
+3788905,169,"AZ, TN, PA","Restaurants, Local Services, Southern",0.6364,11
+8639199,36,"AZ, PA","Restaurants, American (Traditional), Mediterranean",0.625,8
+8953571,157,"AZ, IN, FL","Restaurants, Bars, American (New)",0.625,8
+214202,94,"FL, PA, TN","Restaurants, Food, American (Traditional)",0.619,21
+12524036,82,"PA, FL, AZ","Restaurants, Mexican, Bars",0.6154,13
+3020172,36,"IN, TN","Restaurants, Bars, Nightlife",0.6,5
+5625478,96,"FL, PA, IN","Restaurants, Occupational Therapy, Bingo Halls",0.6,5
+1438405,69,"TN, PA, AZ","Restaurants, Event Planning & Services, Nightlife",0.6,15
+4467909,65,"TN, FL, IN","Restaurants, Bars, Nightlife",0.6,10
+6028614,332,"FL, AZ, IN","Restaurants, Breakfast & Brunch, American (New)",0.6,20
+5900594,85,"PA, FL, TN","Restaurants, Food, American (Traditional)",0.5938,32
+5686084,1117,"PA, TN, AZ","Restaurants, Food, Nightlife",0.5909,22
+1740107,693,"FL, TN, PA","Restaurants, Food, Nightlife",0.5897,39
+5973445,103,"TN, IN, AZ","Restaurants, Bars, Nightlife",0.5714,14
+13097761,189,"PA, TN, FL","Restaurants, Bars, Nightlife",0.5714,21
+3136699,194,"TN, FL, PA","Restaurants, American (Traditional), Event Planning & Services",0.5714,14
+12718708,419,"TN, FL, AZ","Restaurants, Nightlife, Bars",0.5714,7
+5764256,37,"IN, TN, AZ","Restaurants, Bars, Nightlife",0.5714,7
+242081,1245,"AZ, FL, TN","Restaurants, American (Traditional), Food",0.5641,117
+6227864,155,"PA, FL, TN","Restaurants, Bars, Nightlife",0.5625,16
+1660939,235,"FL, PA, TN","Restaurants, Food, Bars",0.5625,32
+6380067,694,"TN, FL, PA","Restaurants, Nightlife, Food",0.5604,91
+1663355,593,"PA, FL, TN","Restaurants, Bars, Nightlife",0.5556,27
+7962891,949,"PA, FL, AZ","Restaurants, Nightlife, Mediterranean",0.5556,27
+13544038,37,"PA, IN, FL","Restaurants, Chinese, Dim Sum",0.5556,9
+3952552,133,"FL, PA, IN","Restaurants, Food, Nightlife",0.5556,9
+9547315,955,"FL, TN, PA","Restaurants, Bars, Nightlife",0.5455,22
+8637460,59,"IN, TN, FL","Restaurants, American (Traditional), Breakfast & Brunch",0.5455,11
+714610,419,"TN, FL, AZ","Restaurants, Nightlife, Bars",0.5455,44
+5545045,593,"FL, TN, PA","Restaurants, Food, Nightlife",0.5385,26
+13602547,421,"TN, FL, PA","Restaurants, American (Traditional), Bars",0.5385,13
+6805341,147,"AZ, PA, TN","Restaurants, Nightlife, Food",0.537,54
+1198196,159,"TN, AZ, PA","Restaurants, Nightlife, Bars",0.5333,15
+3318219,127,"IN, FL, AZ","Restaurants, Shopping, Food",0.5333,15
+2405385,576,"PA, FL, TN","Restaurants, Food, Specialty Food",0.5333,15
+10687831,133,"TN, PA, FL","Restaurants, Food, American (Traditional)",0.5238,21
+1191163,98716,"PA, FL, TN","Restaurants, Food, Nightlife",0.5147,7873
+10571947,1079,"PA, TN, FL","Restaurants, Food, Nightlife",0.5111,45
+3941906,25,"TN, PA","Food, Breakfast & Brunch, Restaurants",0.5,2
+4022610,822,"PA, TN, AZ","Restaurants, Food, Fast Food",0.5,8
+11059177,320,"FL, AZ, TN","Restaurants, Nightlife, Breakfast & Brunch",0.5,16
+101480,60,"IN, AZ","Restaurants, Mexican, Food",0.5,4
+1160681,54,"TN, FL","Hotels, Venues & Event Spaces, Hotels & Travel",0.5,2
+12861123,47,"FL, AZ","Restaurants, Mediterranean, Nightlife",0.5,2
+10013437,28,"TN, FL","Restaurants, American (New), Breakfast & Brunch",0.5,14
+11912470,82,"PA, TN","Restaurants, Bars, American (New)",0.5,2
+8874031,30,"FL, AZ","Hotels & Travel, Vacation Rentals, Car Rental",0.5,2
+546128,31,"PA, TN","Cheesesteaks, Restaurants, Delis",0.5,2
+3987234,591,"PA, IN, TN","Restaurants, Breakfast & Brunch, American (New)",0.5,20
+10145100,35,"FL, PA","Hotels & Travel, American (New), Car Rental",0.5,2
+5401332,79,"FL, AZ","Fashion, Shopping, Shoe Stores",0.5,2
+11186166,27,"TN, FL","Tacos, Burgers, Mexican",0.5,2
+2969350,128,"PA, FL","Food, Coffee & Tea, Juice Bars & Smoothies",0.5,4
+2393219,27,"AZ, IN","Local Services, Restaurants, Sewing & Alterations",0.5,2
+1568776,410,"AZ, PA, FL","Restaurants, Nightlife, Bars",0.4828,29
+1135872,257,"PA, TN, IN","Restaurants, Nightlife, Food",0.48,25
+1545281,14433,"TN, FL, AZ","Restaurants, Nightlife, Bars",0.4713,679
+1929594,1451829,"PA, FL, TN","Restaurants, Food, Nightlife",0.4707,640324
+2526126,585,"PA, TN, AZ","Restaurants, Nightlife, Bars",0.4667,60
+1150160,169,"TN, FL, PA","Restaurants, Nightlife, Bars",0.4643,28
+10078376,22591,"FL, PA, TN","Restaurants, Food, Nightlife",0.4631,1328
+1370632,561,"FL, TN, AZ","Restaurants, Shopping, Bars",0.4615,13
+311549,2904,"PA, TN, FL","Restaurants, Nightlife, Bars",0.4561,171
+34529,132,"AZ, TN, PA","Restaurants, Food, Delis",0.4545,11
+5019262,413,"FL, TN, AZ","Restaurants, Food, Breakfast & Brunch",0.4516,31
+4824453,4983,"PA, FL, TN","Restaurants, Food, Chinese",0.4451,173
+10637466,35,"TN, PA, IN","Restaurants, Nightlife, Bars",0.4444,9
+3342901,12128,"FL, TN, PA","Restaurants, Food, Nightlife",0.441,1077
+517877,106,"PA, AZ, FL","Restaurants, Hotels & Travel, Transportation",0.4375,16
+12230820,136,"TN, FL, PA","Restaurants, Bars, Nightlife",0.4375,16
+5747563,611,"PA, TN, FL","Restaurants, Nightlife, Bars",0.4348,46
+1751586,212,"TN, PA, AZ","Restaurants, American (New), American (Traditional)",0.4348,23
+4015287,4310,"PA, FL, TN","Restaurants, Nightlife, Bars",0.434,159
+8687960,102,"AZ, IN, PA","Restaurants, Bars, Nightlife",0.4286,28
+2431694,855,"PA, TN, AZ","Restaurants, Food, American (New)",0.4268,82
+1649199,7175,"FL, PA, TN","Restaurants, Food, Nightlife",0.4242,719
+7068064,4388,"FL, TN, PA","Restaurants, Food, Nightlife",0.4238,269
+13581251,251,"PA, FL, TN","Restaurants, Food, Breakfast & Brunch",0.4231,26
+3690293,53,"AZ, TN, PA","Restaurants, Nightlife, Bars",0.4118,17
+6403570,199,"AZ, TN, IN","Restaurants, Food, American (Traditional)",0.4091,22
+6144097,324,"FL, TN, PA","Restaurants, Nightlife, American (Traditional)",0.4091,22
+412297,23009,"TN, FL, PA","Restaurants, Nightlife, Bars",0.4056,1144
+10667695,9694,"AZ, TN, FL","Restaurants, Food, Nightlife",0.4054,222
+2228975,728870,"PA, TN, AZ","Restaurants, Food, Nightlife",0.4035,58591
+4170131,7489,"AZ, PA, IN","Restaurants, Food, Nightlife",0.4003,692
+7114157,265,"IN, TN, PA","Restaurants, Nightlife, Bars",0.4,15
+11853048,129,"PA, IN, TN","Hotels & Travel, Venues & Event Spaces, Event Planning & Services",0.4,5
+9255203,157,"PA, AZ, FL","Restaurants, Nightlife, Food",0.4,20
+6271380,725,"AZ, PA, TN","Restaurants, Food, Breakfast & Brunch",0.3953,43
+2713199,5812,"AZ, TN, FL","Restaurants, Nightlife, Bars",0.3891,293
+2409472,673,"TN, PA, AZ","Restaurants, Food, American (Traditional)",0.3889,36
+5017317,223,"TN, PA, IN","Restaurants, Nightlife, Bars",0.3889,18
+2506801,62331,"PA, FL, TN","Restaurants, Nightlife, Bars",0.3885,3539
+3655429,1144,"TN, FL, PA","Restaurants, Food, Nightlife",0.3881,67
+548095,274,"PA, TN, FL","Restaurants, Food, Breakfast & Brunch",0.3824,34
+3897095,675,"PA, TN, FL","Restaurants, Food, Nightlife",0.3768,69
+3134796,5154,"FL, PA, TN","Restaurants, Nightlife, Bars",0.3755,277
+2637926,672,"FL, AZ, PA","Restaurants, Nightlife, Bars",0.375,16
+102509,48,"AZ, TN, IN","Restaurants, Hotels & Travel, Barbeque",0.375,8
+69730,259,"PA, TN, FL","Restaurants, Nightlife, American (New)",0.3704,27
+2317915,6035,"PA, FL, TN","Restaurants, Food, Nightlife",0.3658,257
+5152698,2839,"TN, IN, FL","Restaurants, Nightlife, Bars",0.3643,140
+1020000,847,"TN, FL, PA","Restaurants, Nightlife, Bars",0.3611,36
+9121868,8246,"AZ, PA, FL","Restaurants, Food, Nightlife",0.3593,654
+11702241,2444,"TN, PA, FL","Restaurants, Food, Nightlife",0.3571,28
+2491694,1115,"PA, FL, TN","Restaurants, Bars, Nightlife",0.3548,31
+1885218,375,"TN, AZ, FL","Restaurants, Nightlife, Bars",0.3544,79
+382631,87248,"TN, FL, AZ","Restaurants, Nightlife, Bars",0.3523,4948
+2452352,513,"TN, FL, PA","Restaurants, Nightlife, Bars",0.3521,71
+840082,4049,"TN, FL, PA","Restaurants, Nightlife, Bars",0.3515,202
+4265106,23243,"AZ, TN, FL","Restaurants, Food, Nightlife",0.3507,1383
+323764,983220,"TN, PA, AZ","Restaurants, Nightlife, Bars",0.3498,43602
+7305350,722,"AZ, TN, PA","Restaurants, Food, Nightlife",0.3478,23
+1748081,102795,"PA, FL, TN","Restaurants, Nightlife, Bars",0.3353,5574
+828610,58762,"PA, TN, FL","Restaurants, Nightlife, Bars",0.3338,4074
+66231,6796,"PA, TN, IN","Restaurants, Food, Nightlife",0.3333,126
+11186643,63,"PA, FL, IN","Restaurants, Italian, Pizza",0.3333,6
+10757131,96,"TN, FL, PA","Restaurants, American (New), Moroccan",0.3333,6
+718533,256492,"PA, TN, FL","Restaurants, Nightlife, Bars",0.3329,13819
+1286677,81525,"TN, FL, PA","Restaurants, Nightlife, Bars",0.3328,3708
+1901613,51474,"AZ, TN, PA","Restaurants, Nightlife, Food",0.3266,2235
+9288160,44397,"TN, AZ, PA","Restaurants, Nightlife, Bars",0.325,1729
+7884884,7651,"FL, PA, TN","Restaurants, Nightlife, Bars",0.3232,263
+265832,27685,"AZ, TN, PA","Restaurants, Nightlife, Bars",0.323,1263
+2524133,5617,"PA, AZ, FL","Restaurants, Nightlife, Bars",0.3199,347
+3778139,936,"IN, TN, AZ","Restaurants, Nightlife, American (New)",0.3171,41
+355705,5648,"FL, TN, AZ","Restaurants, Food, Nightlife",0.3149,416
+4466195,32730,"TN, AZ, FL","Restaurants, Nightlife, Bars",0.3142,1585
+5095950,19745,"TN, FL, PA","Restaurants, Food, Nightlife",0.3137,1052
+1579013,550,"TN, IN, FL","Nightlife, Restaurants, Bars",0.3125,16
+525709,16418,"AZ, PA, TN","Restaurants, Food, Nightlife",0.3085,1196
+663716,722,"PA, FL, TN","Restaurants, Food, Nightlife",0.3077,52
+1733017,2267,"AZ, PA, TN","Restaurants, Nightlife, Food",0.3065,124
+173222,222160,"TN, PA, FL","Restaurants, Nightlife, Bars",0.3027,12848
+8863828,146,"IN, TN, FL","Restaurants, Food, Fast Food",0.3,20
+4602784,3154,"AZ, FL, TN","Restaurants, Food, Nightlife",0.2968,219
+914975,5042,"PA, FL, TN","Restaurants, Nightlife, Bars",0.296,402
+4383719,1757,"FL, AZ, PA","Restaurants, Bars, Nightlife",0.2903,31
+3854579,774,"FL, TN, PA","Restaurants, Food, Breakfast & Brunch",0.2857,21
+2046467,201,"PA, FL, TN","Hotels & Travel, Event Planning & Services, Hotels",0.2857,14
+556432,3204,"TN, FL, AZ","Restaurants, Food, Nightlife",0.2791,172
+11180423,598,"AZ, TN, PA","Restaurants, Nightlife, Bars",0.2778,18
+7147973,4706,"AZ, TN, FL","Restaurants, Nightlife, Bars",0.2741,321
+1635233,114486,"TN, AZ, PA","Restaurants, Nightlife, Bars",0.2735,5927
+170897,159918,"AZ, PA, FL","Restaurants, Food, Nightlife",0.2628,9130
+8267033,87333,"PA, AZ, FL","Restaurants, Food, Nightlife",0.2495,6466
+2906814,5626,"TN, PA, AZ","Restaurants, Food, Nightlife",0.2418,364
